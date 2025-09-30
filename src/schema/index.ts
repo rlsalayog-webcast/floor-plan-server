@@ -24,19 +24,19 @@ export const typeDefs = `#graphql
         coordinates: LandmarkCoordinates!
     }
 
-    type FloorPlanElementAttributes {
+    type FloorPlanAreaAttributes {
         name: String!
         description: String!
     }
 
-    type FloorPlanElement {
+    type FloorPlanArea {
         id: ID!
         coordinates: FloorCoordinates!
         width: Float
         height: Float
         backgroundColor: String!
         textColor: String!
-        attributes: FloorPlanElementAttributes!
+        attributes: FloorPlanAreaAttributes!
     }
 
     type Floor {
@@ -44,7 +44,7 @@ export const typeDefs = `#graphql
         level: String!
         name: String!
         description: String
-        elements: [FloorPlanElement!]!
+        areas: [FloorPlanArea!]!
     }
 
     type Landmark {

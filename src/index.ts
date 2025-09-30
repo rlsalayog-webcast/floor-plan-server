@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import express from "express";
 import http from "http";
 import { connectDB } from "../utils/database";
+import associations from "./model";
 import { resolvers } from "./resolver";
 import { typeDefs } from "./schema";
 
@@ -34,6 +35,9 @@ app.use(
         context: async ({ req }) => ({ token: req.headers.token }),
     })
 );
+
+associations();
+
 connectDB(async () => {
     await new Promise<void>((resolve) => httpServer.listen({ port: 4000 }, resolve));
     console.log(`🚀 Server ready at http://localhost:4000/`);
