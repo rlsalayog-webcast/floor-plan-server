@@ -1,5 +1,5 @@
-import Area from "./area";
-import AreaDetails from "./area/detail";
+import AreaDetails from "./area/areaDetails";
+import FloorPlanArea from "./area/floorPlanArea";
 import Floor from "./floor";
 import Landmark from "./landmark";
 
@@ -7,11 +7,11 @@ const associations = () => {
     Landmark.hasMany(Floor, { as: "floorPlans", foreignKey: "landmarkId" });
     Floor.belongsTo(Landmark, { foreignKey: "landmarkId" });
 
-    Floor.hasMany(Area, { as: "areas", foreignKey: "floorId" });
-    Area.belongsTo(Floor, { foreignKey: "floorId" });
+    Floor.hasMany(FloorPlanArea, { as: "areas", foreignKey: "floorId" });
+    FloorPlanArea.belongsTo(Floor, { foreignKey: "floorId" });
 
-    Area.hasOne(AreaDetails, { foreignKey: "areaId" });
-    AreaDetails.belongsTo(Area, { foreignKey: "areaId" });
+    FloorPlanArea.hasOne(AreaDetails, { foreignKey: "areaId" });
+    AreaDetails.belongsTo(FloorPlanArea, { foreignKey: "areaId" });
 };
 
 export default associations;

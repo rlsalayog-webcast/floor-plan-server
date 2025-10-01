@@ -1,44 +1,28 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../../utils/database";
-import Floor from "../floor";
+import FloorPlanArea from "./floorPlanArea";
 
-const Area = sequelize.define(
-    "Area",
+const AreaDetails = sequelize.define(
+    "AreaDetails",
     {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        x: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-        y: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-        width: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-        height: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-        backgroundColor: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        textColor: {
+        description: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        floorId: {
+        areaId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: Floor,
+                model: FloorPlanArea,
                 key: "id",
             },
             onUpdate: "CASCADE",
@@ -50,4 +34,4 @@ const Area = sequelize.define(
     }
 );
 
-export default Area;
+export default AreaDetails;
