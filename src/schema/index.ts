@@ -1,15 +1,25 @@
 export const typeDefs = `#graphql
     scalar JSON
 
+    type Mutation {
+        createLandmark(
+            name: String!,
+            category: String!,
+            latitude: String!,
+            longitude: String!
+        ): Landmark
+        createFloor(
+            landmarkId: ID!,
+            level: String!,
+            name: String!,
+            description: String
+        ): Floor
+    }
+
     type Query {
         getLandmarks: [Landmark!]!
         getLandmarkById(id: ID!): Landmark
         getFloorByLevel(landmarkId: ID!, level: String!): Floor
-    }
-
-    type LandmarkCoordinates {
-        latitude: Float!
-        longitude: Float!
     }
 
     type FloorCoordinates {
@@ -17,14 +27,7 @@ export const typeDefs = `#graphql
         y: Float!
     }
 
-    type Location {
-        address: String!
-        city: String!
-        country: String!
-        coordinates: LandmarkCoordinates!
-    }
-
-    type FloorPlanAreaAttributes {
+    type FloorPlanAreaDetails {
         name: String!
         description: String!
     }
@@ -36,7 +39,7 @@ export const typeDefs = `#graphql
         height: Float
         backgroundColor: String!
         textColor: String!
-        attributes: FloorPlanAreaAttributes!
+        details: FloorPlanAreaDetails!
     }
 
     type Floor {
@@ -50,10 +53,11 @@ export const typeDefs = `#graphql
     type Landmark {
         id: ID!
         name: String!
-        location: Location!
-        description: String
+        category: String!
+        latitude: String!
+        longitude: String!
         floor_plans: [Floor!]!
-        created_at: String!
-        updated_at: String!
+        createdAt: String!
+        updatedAt: String!
     }
 `;

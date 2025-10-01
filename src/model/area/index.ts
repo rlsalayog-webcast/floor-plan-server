@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../../utils/database";
-import Floor from "./floor";
+import sequelize from "../../../utils/database";
+import Floor from "../floor";
 
 const Area = sequelize.define(
     "Area",
@@ -9,6 +9,14 @@ const Area = sequelize.define(
             type: DataTypes.UUID,
             primaryKey: true,
             defaultValue: DataTypes.UUIDV4,
+        },
+        x: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        y: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
         },
         width: {
             type: DataTypes.INTEGER,

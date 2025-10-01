@@ -1,8 +1,9 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../../utils/database";
+import Area from ".";
+import sequelize from "../../../utils/database";
 
-const Landmark = sequelize.define(
-    "Landmark",
+const AreaDetails = sequelize.define(
+    "AreaDetails",
     {
         id: {
             type: DataTypes.UUID,
@@ -13,17 +14,19 @@ const Landmark = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        category: {
+        description: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        latitude: {
-            type: DataTypes.STRING,
+        area_id: {
+            type: DataTypes.UUID,
             allowNull: false,
-        },
-        longitude: {
-            type: DataTypes.STRING,
-            allowNull: false,
+            references: {
+                model: Area,
+                key: "id",
+            },
+            onUpdate: "CASCADE",
+            onDelete: "CASCADE",
         },
     },
     {
@@ -31,4 +34,4 @@ const Landmark = sequelize.define(
     }
 );
 
-export default Landmark;
+export default AreaDetails;
