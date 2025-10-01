@@ -20,8 +20,8 @@ export const typeDefs = `#graphql
             floorId: ID!,
             x: Float!,
             y: Float!,
-            width: Float,
-            height: Float,
+            width: Float!,
+            height: Float!,
             backgroundColor: String!,
             textColor: String!,
             details: JSON!
@@ -43,8 +43,8 @@ export const typeDefs = `#graphql
         id: ID!
         x: Float!
         y: Float!
-        width: Float
-        height: Float
+        width: Float!
+        height: Float!
         backgroundColor: String!
         textColor: String!
         details: FloorPlanAreaDetails!

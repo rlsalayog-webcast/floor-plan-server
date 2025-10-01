@@ -1,3 +1,4 @@
+import AreaDetails from "../model/area/areaDetails";
 import FloorPlanArea from "../model/area/floorPlanArea";
 import Floor from "../model/floor";
 import Landmark from "../model/landmark";
@@ -39,23 +40,33 @@ export const createArea = async (
     { floorId, x, y, width, height, backgroundColor, textColor, details }
 ) => {
     try {
-        // Validate floor exists
+        // make sure floor exists
         const floor = await Floor.findByPk(floorId);
         if (!floor) throw new Error("Floor not found");
 
-        // Create area + details in one go
+        // create area first
         const area = await FloorPlanArea.create({
-            floor_id: floorId,
+            floorId,
             x,
             y,
             width,
             height,
             backgroundColor,
             textColor,
-            details, // ✅ name + description together
         });
 
-        return area;
+        // then create details and link to area
+        const areaDetails = await AreaDetails.create({
+            name: details.name,
+            description: details.description,
+            areaId: (area as any).id,
+        });
+
+        // attach details in response
+        return {
+            ...area.get(),
+            details: areaDetails.get(),
+        };
     } catch (error) {
         console.error("Error creating area:", error);
         throw new Error("Failed to create area");
