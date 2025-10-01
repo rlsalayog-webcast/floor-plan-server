@@ -16,11 +16,11 @@ export const createFloor = async (_, { landmarkId, level, name, description }) =
         const landmark = await Landmark.findByPk(landmarkId);
         if (!landmark) throw new Error("Landmark not found");
 
-        const existingFloor = await Floor.findOne({ where: { landmark_id: landmarkId, level } });
+        const existingFloor = await Floor.findOne({ where: { landmarkId: landmarkId, level } });
         if (existingFloor) throw new Error(`Floor level ${level} already exists for this landmark`);
 
         const floor = await Floor.create({
-            landmark_id: landmarkId,
+            landmarkId: landmarkId,
             level,
             name,
             description,

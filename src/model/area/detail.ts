@@ -18,7 +18,7 @@ const AreaDetails = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        area_id: {
+        areaId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {

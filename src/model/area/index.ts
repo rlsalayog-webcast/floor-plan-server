@@ -34,7 +34,7 @@ const Area = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        floor_id: {
+        floorId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {

@@ -24,7 +24,7 @@ export const getLandmarkById = async (_, { id }) => {
 export const getFloorByLevel = async (_, { landmarkId, level }) => {
     try {
         const floor = await Floor.findOne({
-            where: { landmark_id: landmarkId, level },
+            where: { landmarkId: landmarkId, level },
         });
 
         if (!floor) {

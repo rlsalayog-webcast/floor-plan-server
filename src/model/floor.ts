@@ -22,7 +22,7 @@ const Floor = sequelize.define(
             type: DataTypes.STRING,
             allowNull: true,
         },
-        landmark_id: {
+        landmarkId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
