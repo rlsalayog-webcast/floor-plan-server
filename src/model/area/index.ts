@@ -6,9 +6,9 @@ const Area = sequelize.define(
     "Area",
     {
         id: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             primaryKey: true,
-            defaultValue: DataTypes.UUIDV4,
+            autoIncrement: true,
         },
         x: {
             type: DataTypes.INTEGER,
@@ -35,7 +35,7 @@ const Area = sequelize.define(
             allowNull: false,
         },
         floor_id: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: Floor,

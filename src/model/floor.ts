@@ -6,9 +6,9 @@ const Floor = sequelize.define(
     "Floor",
     {
         id: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             primaryKey: true,
-            defaultValue: DataTypes.UUIDV4,
+            autoIncrement: true,
         },
         level: {
             type: DataTypes.STRING,
@@ -23,7 +23,7 @@ const Floor = sequelize.define(
             allowNull: true,
         },
         landmark_id: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: Landmark,

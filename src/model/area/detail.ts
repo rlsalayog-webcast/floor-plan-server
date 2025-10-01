@@ -6,9 +6,9 @@ const AreaDetails = sequelize.define(
     "AreaDetails",
     {
         id: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             primaryKey: true,
-            defaultValue: DataTypes.UUIDV4,
+            autoIncrement: true,
         },
         name: {
             type: DataTypes.STRING,
@@ -19,7 +19,7 @@ const AreaDetails = sequelize.define(
             allowNull: false,
         },
         area_id: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: Area,
