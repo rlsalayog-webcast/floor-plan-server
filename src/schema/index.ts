@@ -31,7 +31,7 @@ export const typeDefs = `#graphql
     type Query {
         getLandmarks: [Landmark!]!
         getLandmarkById(id: ID!): Landmark
-        getFloorByLevel(landmarkId: ID!, level: String!): Floor
+        getFloorByLevelId(landmarkId: ID!, levelId: String!): Floor
     }
 
     type FloorPlanAreaDetails {
@@ -55,7 +55,7 @@ export const typeDefs = `#graphql
         level: String!
         name: String!
         description: String
-        areas: [FloorPlanArea!]!
+        areas: [FloorPlanArea]
     }
 
     type Landmark {
@@ -64,7 +64,7 @@ export const typeDefs = `#graphql
         category: String!
         latitude: String!
         longitude: String!
-        floorPlans: [Floor!]!
+        floorPlans: [Floor]
         createdAt: String!
         updatedAt: String!
     }

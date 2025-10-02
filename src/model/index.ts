@@ -10,8 +10,8 @@ const associations = () => {
     Floor.hasMany(FloorPlanArea, { as: "areas", foreignKey: "floorId" });
     FloorPlanArea.belongsTo(Floor, { foreignKey: "floorId" });
 
-    FloorPlanArea.hasOne(AreaDetails, { foreignKey: "areaId" });
-    AreaDetails.belongsTo(FloorPlanArea, { foreignKey: "areaId" });
+    FloorPlanArea.hasOne(AreaDetails, { as: "details", foreignKey: "areaId" });
+    AreaDetails.belongsTo(FloorPlanArea, { as: "details", foreignKey: "areaId" });
 };
 
 export default associations;

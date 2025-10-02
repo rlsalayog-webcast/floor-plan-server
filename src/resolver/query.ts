@@ -1,3 +1,5 @@
+import AreaDetails from "../model/area/areaDetails";
+import FloorPlanArea from "../model/area/floorPlanArea";
 import Floor from "../model/floor";
 import Landmark from "../model/landmark";
 
@@ -12,7 +14,14 @@ export const getLandmarks = async () => {
 
 export const getLandmarkById = async (_, { id }) => {
     try {
-        const landmark = await Landmark.findByPk(id);
+        const landmark = await Landmark.findByPk(id, {
+            include: [
+                {
+                    model: Floor,
+                    as: "floorPlans",
+                },
+            ],
+        });
         if (!landmark) throw new Error("Landmark not found");
         return landmark;
     } catch (err) {
@@ -21,14 +30,26 @@ export const getLandmarkById = async (_, { id }) => {
     }
 };
 
-export const getFloorByLevel = async (_, { landmarkId, level }) => {
+export const getFloorByLevelId = async (_, { landmarkId, levelId }) => {
     try {
         const floor = await Floor.findOne({
-            where: { landmarkId: landmarkId, level },
+            where: { landmarkId: landmarkId, id: levelId },
+            include: [
+                {
+                    model: FloorPlanArea,
+                    as: "areas",
+                    include: [
+                        {
+                            model: AreaDetails,
+                            as: "details",
+                        },
+                    ],
+                },
+            ],
         });
 
         if (!floor) {
-            throw new Error(`Floor with level ${level} not found for landmark ${landmarkId}`);
+            throw new Error(`Floor with level ${levelId} not found for landmark ${landmarkId}`);
         }
 
         return floor;
