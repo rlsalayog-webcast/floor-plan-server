@@ -38,6 +38,7 @@ export const getFloorByLevelId = async (_, { landmarkId, levelId }) => {
                 {
                     model: FloorPlanArea,
                     as: "areas",
+                    required: false,
                     include: [
                         {
                             model: AreaDetails,

@@ -26,6 +26,12 @@ export const typeDefs = `#graphql
             textColor: String!,
             details: JSON!
         ): FloorPlanArea
+
+        updateFloorAreas(
+            landmarkId: ID!
+            floorId: ID!
+            areas: [UpdateFloorPlanAreaInput!]!
+        ): [FloorPlanArea]!
     }
 
     type Query {
@@ -67,5 +73,21 @@ export const typeDefs = `#graphql
         floorPlans: [Floor]
         createdAt: String!
         updatedAt: String!
+    }
+
+    input UpdateAreaDetailsInput {
+        name: String!
+        description: String!
+    }
+
+    input UpdateFloorPlanAreaInput {
+        id: ID
+        x: Float!
+        y: Float!
+        width: Float!
+        height: Float!
+        backgroundColor: String!
+        textColor: String!
+        details: UpdateAreaDetailsInput!
     }
 `;

@@ -1,3 +1,4 @@
+import sequelize from "../../utils/database";
 import AreaDetails from "../model/area/areaDetails";
 import FloorPlanArea from "../model/area/floorPlanArea";
 import Floor from "../model/floor";
@@ -70,5 +71,119 @@ export const createArea = async (
     } catch (error) {
         console.error("Error creating area:", error);
         throw new Error("Failed to create area");
+    }
+};
+
+export const updateFloorAreas = async (_, { landmarkId, floorId, areas }) => {
+    const t = await sequelize.transaction();
+
+    try {
+        const floor: any = await Floor.findOne({
+            where: { id: floorId, landmarkId },
+            transaction: t,
+        });
+
+        if (!floor) {
+            throw new Error(`Floor ${floorId} not found for landmark ${landmarkId}`);
+        }
+
+        const updatedAreas: any[] = [];
+
+        // collect ids from FE payload
+        const payloadIds = areas.filter((a) => a.id).map((a) => a.id);
+
+        // fetch existing areas from DB
+        const existingAreas = await FloorPlanArea.findAll({
+            where: { floorId: floor.id },
+            transaction: t,
+        });
+
+        // find areas that exist in DB but not in FE payload
+        const toDelete = existingAreas.filter(
+            (dbArea: any) => !payloadIds.includes(dbArea.id.toString())
+        );
+
+        // soft delete them (assuming paranoid mode OR isDeleted flag)
+        for (const delArea of toDelete) {
+            await delArea.destroy({ transaction: t });
+        }
+
+        // process create/update
+        for (const area of areas) {
+            let floorArea;
+
+            if (!area.id) {
+                // CREATE
+                floorArea = await FloorPlanArea.create(
+                    {
+                        floorId: floor.id,
+                        x: area.x,
+                        y: area.y,
+                        width: area.width,
+                        height: area.height,
+                        backgroundColor: area.backgroundColor,
+                        textColor: area.textColor,
+                    },
+                    { transaction: t }
+                );
+
+                await AreaDetails.create(
+                    {
+                        areaId: floorArea.id,
+                        name: area.details.name,
+                        description: area.details.description,
+                    },
+                    { transaction: t }
+                );
+            } else {
+                // UPDATE
+                floorArea = await FloorPlanArea.findOne({
+                    where: { id: area.id, floorId: floor.id },
+                    transaction: t,
+                });
+
+                if (!floorArea) {
+                    throw new Error(
+                        `Area ${area.id} not found for floor ${floorId} in landmark ${landmarkId}`
+                    );
+                }
+
+                await floorArea.update(
+                    {
+                        x: area.x,
+                        y: area.y,
+                        width: area.width,
+                        height: area.height,
+                        backgroundColor: area.backgroundColor,
+                        textColor: area.textColor,
+                    },
+                    { transaction: t }
+                );
+
+                await AreaDetails.upsert(
+                    {
+                        areaId: floorArea.id,
+                        name: area.details.name,
+                        description: area.details.description,
+                    },
+                    { transaction: t }
+                );
+            }
+
+            // reload with details
+            const fullArea = await FloorPlanArea.findByPk(floorArea.id, {
+                include: [{ model: AreaDetails, as: "details" }],
+                transaction: t,
+            });
+
+            updatedAreas.push(fullArea);
+        }
+
+        await t.commit();
+        return updatedAreas;
+    } catch (err) {
+        await t.rollback();
+        console.error("Error updating floor areas:", err);
+        throw new Error("Failed to update floor areas");
     }
 };

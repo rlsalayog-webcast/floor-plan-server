@@ -11,11 +11,11 @@ const FloorPlanArea = sequelize.define(
             autoIncrement: true,
         },
         x: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: false,
         },
         y: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: false,
         },
         width: {
