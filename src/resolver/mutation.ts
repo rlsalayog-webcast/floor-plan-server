@@ -36,6 +36,53 @@ export const createFloor = async (_, { landmarkId, level, name, description }) =
     }
 };
 
+export const updateFloor = async (_, { id, landmarkId, level, name, description }) => {
+    try {
+        const floor: any = await Floor.findByPk(id);
+        if (!floor) throw new Error("Floor not found");
+
+        // Optional: verify the floor belongs to the correct landmark
+        if (landmarkId && Number(floor.landmarkId) !== Number(landmarkId)) {
+            throw new Error("This floor does not belong to the specified landmark");
+        }
+
+        // If level is being updated, check for duplicates
+        if (level && level !== floor.level) {
+            const existingFloor = await Floor.findOne({
+                where: { landmarkId: floor.landmarkId, level },
+            });
+            if (existingFloor) {
+                throw new Error(`Floor level ${level} already exists for this landmark`);
+            }
+        }
+
+        // Update fields (only if provided)
+        await floor.update({
+            level: level ?? floor.level,
+            name: name ?? floor.name,
+            description: description ?? floor.description,
+        });
+
+        return floor;
+    } catch (err) {
+        console.error("Error updating floor:", err);
+        throw new Error("Failed to update floor");
+    }
+};
+
+export const deleteFloor = async (_, { id, landmarkId }) => {
+    try {
+        const floor = await Floor.findOne({ where: { id, landmarkId } });
+        if (!floor) throw new Error("Floor not found for this landmark");
+
+        await floor.destroy(); // 👈 will soft delete (set deletedAt)
+        return true;
+    } catch (err) {
+        console.error("Error deleting floor:", err);
+        throw new Error("Failed to delete floor");
+    }
+};
+
 export const createArea = async (
     _,
     { floorId, x, y, width, height, backgroundColor, textColor, details }

@@ -16,6 +16,19 @@ export const typeDefs = `#graphql
             description: String
         ): Floor
 
+        updateFloor(
+            id: ID!
+            landmarkId: ID!
+            level: String!
+            name: String!
+            description: String
+        ): Floor!
+
+        deleteFloor(
+            id: ID!
+            landmarkId: ID!
+        ): Boolean!
+
         createArea(
             floorId: ID!,
             x: Float!,

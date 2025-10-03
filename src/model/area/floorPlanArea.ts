@@ -19,11 +19,11 @@ const FloorPlanArea = sequelize.define(
             allowNull: false,
         },
         width: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: false,
         },
         height: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
             allowNull: false,
         },
         backgroundColor: {

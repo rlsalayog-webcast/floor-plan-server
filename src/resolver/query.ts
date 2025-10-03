@@ -19,6 +19,7 @@ export const getLandmarkById = async (_, { id }) => {
                 {
                     model: Floor,
                     as: "floorPlans",
+                    required: false,
                 },
             ],
         });
