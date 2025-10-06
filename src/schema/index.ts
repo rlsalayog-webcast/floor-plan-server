@@ -8,6 +8,10 @@ export const typeDefs = `#graphql
             latitude: String!,
             longitude: String!
         ): Landmark
+
+        deleteLandmark(
+            id: ID!
+        ): Landmark
         
         createFloor(
             landmarkId: ID!,

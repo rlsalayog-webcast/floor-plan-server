@@ -1,22 +1,18 @@
-import dotenv from "dotenv";
+import path from "path";
 import { Sequelize } from "sequelize";
 
-dotenv.config();
+const dbPath = path.resolve(process.cwd(), "database.sqlite");
 
-const sequelize = new Sequelize(process.env.TRANSACTION_POOLER, {
-    dialect: "postgres",
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false,
-        },
-    },
+const sequelize = new Sequelize({
+    dialect: "sqlite",
+    storage: dbPath,
+    logging: false,
 });
 
 export const connectDB = async (callback: () => void) => {
     try {
         await sequelize.authenticate();
-        console.log("✅ Connected to PostgreSQL successfully!");
+        console.log("✅ Connected to database successfully!");
         await syncDB();
         await callback();
     } catch (error) {

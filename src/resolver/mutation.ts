@@ -7,10 +7,24 @@ import Landmark from "../model/landmark";
 export const createLandmark = async (_, args, context) => {
     try {
         const landmark = await Landmark.create(args);
-
         return landmark;
     } catch (err) {
         console.error("Error creating landmark:", err);
+        throw new Error("Failed to create landmark");
+    }
+};
+
+export const deleteLandmark = async (_, { id }) => {
+    try {
+        const landmark = await Landmark.findByPk(id);
+        if (!landmark) {
+            throw new Error("Landmark not found");
+        }
+        await landmark.destroy();
+        return landmark;
+    } catch (err) {
+        console.error("Error deleting landmark:", err);
+        throw new Error("Failed to delete landmark");
     }
 };
 
